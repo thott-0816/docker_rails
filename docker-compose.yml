@@ -3,19 +3,17 @@ services:
   db:
     image: mysql:5.5
     container_name: db
-    ports:
-      - "3307:3306"
     volumes:
       - db_data:/var/lib/mysql
       - .:/app
     environment:
-      MYSQL_ROOT_PASSWORD:
-      DATABASE_HOST: mysql
-      DATABASE_USER_NAME: root
-      DATABASE_PASSWORD:
+      MYSQL_HOST: localhost
+      MYSQL_USER: root
+      MYSQL_PASSWORD: root
+    env_file: .env
   web:
     build: .
-    container_name: app
+    container_name: web
     command: bundle exec rails s -p 5050 -b '0.0.0.0'
     volumes:
       - .:/app
@@ -24,7 +22,7 @@ services:
       - "5050:5050"
     depends_on:
       - db
-    tty: true 
+    tty: true
     stdin_open: true
 volumes:
   db_data:
